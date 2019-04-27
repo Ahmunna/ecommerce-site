@@ -50,7 +50,7 @@ class Utils
             $products=array();
             foreach ($statement as $row) {
 
-                $my_product=new Product($row['name'],$row['quantity'],$row['price'],$row['category']);
+                $my_product=new Product($row['id_product'],$row['name'],$row['quantity'],$row['price'],$row['category']);
                 array_push($products,$my_product);
             }
             return $products;
@@ -60,6 +60,43 @@ class Utils
             return null;
         }
         
+    }
+    public function findById($id)
+    {
+        try
+        {
+            $stmt = $this->conn->prepare("SELECT * FROM product WHERE id_product=? ;");
+            $stmt->execute([$id]); 
+            $row = $stmt->fetch();
+            return new Product($row['id_product'],$row['name'],$row['quantity'],$row['price'],$row['category']);
+        }
+        catch(Exception $e)
+        {
+            return null;
+        }
+       
+    }
+
+    public function findByQuery($query)
+    {
+        try
+        {   
+            $statement = $this->conn->query("SELECT * FROM product WHERE name like '%$query%' ;");
+            //$statement->execute([$query]);
+            //$result = $statement->fetchAll();
+            $products = array();
+            foreach($statement as $row)
+            {
+                $my_product=new Product($row['id_product'],$row['name'],$row['quantity'],$row['price'],$row['category']);
+                array_push($products,$my_product);
+            }
+            return $products;
+        }  
+        catch(Exception $e)
+        {
+            return null;
+        } 
+       
     }
 
 }

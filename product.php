@@ -12,7 +12,16 @@ class Product
 
     //construct
 
-    function __construct($name,$quantity,$price,$category)
+    function __construct() 
+    { 
+        $a = func_get_args(); 
+        $i = func_num_args(); 
+        if (method_exists($this,$f='__construct'.$i)) { 
+            call_user_func_array(array($this,$f),$a); 
+        } 
+    } 
+
+    function __construct4($name,$quantity,$price,$category)
     {
         $this->name = $name;
         $this->quantity = $quantity;
@@ -20,6 +29,17 @@ class Product
         $this->category = $category;
         file_put_contents('log.txt',"Product created Successfully");
     }
+
+    function __construct5($id,$name,$quantity,$price,$category)
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->quantity = $quantity;
+        $this->price = $price;
+        $this->category = $category;
+        file_put_contents('log.txt',"Product created Successfully");
+    }
+
 
     //getters and setters
 
